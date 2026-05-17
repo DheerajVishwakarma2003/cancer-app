@@ -1,0 +1,49 @@
+{% macro doctor_sidebar(active='') %}
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔬</div>
+    <span>OnchoLens</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Doctor Panel</div>
+    <a href="/doctor/dashboard"     class="nav-item {% if active=='dashboard' %}active{% endif %}"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="/doctor/predict"       class="nav-item {% if active=='predict' %}active{% endif %}"><span class="nav-icon">🤖</span> AI Prediction</a>
+    <a href="/doctor/appointments"  class="nav-item {% if active=='appointments' %}active{% endif %}"><span class="nav-icon">📅</span> Appointments</a>
+    <a href="/doctor/patients"      class="nav-item {% if active=='patients' %}active{% endif %}"><span class="nav-icon">👥</span> Patients</a>
+    <a href="/doctor/prescriptions" class="nav-item {% if active=='prescriptions' %}active{% endif %}"><span class="nav-icon">💊</span> Prescriptions</a>
+    <div class="nav-section-label" style="margin-top:16px">Account</div>
+    <a href="/doctor/profile"   class="nav-item {% if active=='profile' %}active{% endif %}"><span class="nav-icon">👤</span> Profile</a>
+    <a href="/billing"          class="nav-item {% if active=='billing' %}active{% endif %}"><span class="nav-icon">💳</span> Subscription</a>
+    <a href="/login"            class="nav-item" id="logout-btn"><span class="nav-icon">🚪</span> Logout</a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    <span style="font-size:.75rem;color:var(--text-3)">Toggle theme</span>
+  </div>
+</aside>
+{% endmacro %}
+
+{% macro patient_sidebar(active='') %}
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔬</div>
+    <span>OnchoLens</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Patient Panel</div>
+    <a href="/patient/dashboard"      class="nav-item {% if active=='dashboard' %}active{% endif %}"><span class="nav-icon">🏠</span> Dashboard</a>
+    <a href="/patient/doctors"        class="nav-item {% if active=='doctors' %}active{% endif %}"><span class="nav-icon">🔍</span> Find Doctors</a>
+    <a href="/patient/appointments"   class="nav-item {% if active=='appointments' %}active{% endif %}"><span class="nav-icon">📅</span> Appointments</a>
+    <a href="/patient/prescriptions"  class="nav-item {% if active=='prescriptions' %}active{% endif %}"><span class="nav-icon">💊</span> Prescriptions</a>
+    <a href="/patient/history"        class="nav-item {% if active=='history' %}active{% endif %}"><span class="nav-icon">📁</span> Medical History</a>
+    <div class="nav-section-label" style="margin-top:16px">Account</div>
+    <a href="/patient/profile"  class="nav-item {% if active=='profile' %}active{% endif %}"><span class="nav-icon">👤</span> Profile</a>
+    <a href="/billing"          class="nav-item {% if active=='billing' %}active{% endif %}"><span class="nav-icon">💳</span> Subscription</a>
+    <a href="/login"            class="nav-item" id="logout-btn"><span class="nav-icon">🚪</span> Logout</a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    <span style="font-size:.75rem;color:var(--text-3)">Toggle theme</span>
+  </div>
+</aside>
+{% endmacro %}

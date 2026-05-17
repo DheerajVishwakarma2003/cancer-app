@@ -1,0 +1,64 @@
+{% from 'macros.html' import doctor_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patients — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ doctor_sidebar('patients') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">👥 My Patients</div>
+        <div class="page-subtitle">All patients you've interacted with</div>
+      </div>
+      <div class="page-actions">
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="section-card">
+      <div class="search-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Search by name or email…" oninput="filterPatients()" />
+        </div>
+        <span id="patient-count" style="font-size:.85rem;color:var(--text-3);white-space:nowrap">0 patients</span>
+      </div>
+
+      <div id="patients-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="spinner" style="width:32px;height:32px;margin:0 auto 12px"></div>
+          Loading patients…
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Patient Detail Modal -->
+<div id="patient-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title">👤 Patient Details</span>
+      <button class="modal-close" onclick="document.getElementById('patient-modal').style.display='none'">✕</button>
+    </div>
+    <div id="patient-detail-body" style="display:flex;flex-direction:column;gap:12px">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/doctor-patients.js"></script>
+</body>
+</html>

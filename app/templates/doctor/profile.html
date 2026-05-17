@@ -1,0 +1,112 @@
+{% from 'macros.html' import doctor_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ doctor_sidebar('profile') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">👤 My Profile</div>
+        <div class="page-subtitle">Manage your professional information</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="save-btn" onclick="saveProfile()">💾 Save Changes</button>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Avatar + name banner -->
+    <div class="section-card" style="margin-bottom:20px">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="avatar-display">
+          DR
+          <div class="avatar-edit-btn">✎</div>
+        </div>
+        <div class="profile-meta">
+          <h2 id="display-name">Loading…</h2>
+          <p id="display-email" style="color:var(--text-3)"></p>
+          <span class="badge badge-info" id="display-role" style="margin-top:6px">Doctor</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="section-card">
+      <div class="section-card-title">Professional Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="f-name" placeholder="Dr. Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" id="f-phone" placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Specialization</label>
+          <input class="form-input" type="text" id="f-specialization" placeholder="Oncology" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Experience (years)</label>
+          <input class="form-input" type="number" id="f-experience" placeholder="10" min="0" max="60" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Consultation Fee (₹)</label>
+          <input class="form-input" type="number" id="f-fee" placeholder="500" min="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Languages</label>
+          <input class="form-input" type="text" id="f-languages" placeholder="English, Hindi" />
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Bio / About</label>
+          <textarea class="form-input" id="f-bio" rows="4" placeholder="Tell patients about your background, expertise…" style="resize:vertical"></textarea>
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Address / Clinic</label>
+          <input class="form-input" type="text" id="f-address" placeholder="Clinic name, city" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule card -->
+    <div class="section-card">
+      <div class="section-card-title">Weekly Availability</div>
+      <div id="schedule-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Change password -->
+    <div class="section-card">
+      <div class="section-card-title">Change Password</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input class="form-input" type="password" id="new-pw" placeholder="••••••••" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input class="form-input" type="password" id="confirm-pw" placeholder="••••••••" />
+        </div>
+      </div>
+      <button class="btn btn-outline" style="margin-top:12px" onclick="changePassword()">🔒 Update Password</button>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/doctor-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pricing.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" style="position:sticky;top:0;z-index:200;background:rgba(248,250,252,.9);
+     backdrop-filter:blur(12px);border-bottom:1px solid var(--card-border)">
+  <div style="max-width:1100px;margin:0 auto;padding:14px 24px;
+              display:flex;align-items:center;justify-content:space-between">
+    <a href="/" style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);
+                       font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none">
+      🔬 OnchoLens
+    </a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="theme-toggle">🌙</button>
+      <a href="/login"  class="btn btn-outline">Log in</a>
+      <a href="/signup" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Header -->
+<div style="text-align:center;padding:64px 24px 48px">
+  <div style="display:inline-block;background:var(--accent-light);color:var(--accent);
+              border-radius:100px;padding:5px 16px;font-size:.8rem;font-weight:700;
+              text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px">Pricing</div>
+  <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:12px">Simple, transparent pricing</h1>
+  <p style="color:var(--text-2);font-size:1rem;max-width:480px;margin:0 auto">
+    Start free. Scale as you grow. No hidden fees.
+  </p>
+
+  <!-- Toggle -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px">
+    <span style="font-size:.9rem;color:var(--text-2)">Monthly</span>
+    <div class="toggle-wrap" onclick="toggleBilling()">
+      <div class="toggle-knob" id="toggle-knob"></div>
+    </div>
+    <span style="font-size:.9rem;color:var(--text-2)">Annual <span class="badge badge-success" style="font-size:.72rem">Save 20%</span></span>
+  </div>
+</div>
+
+<!-- Plans -->
+<div class="plans-grid" id="plans-container">
+
+  <!-- Doctor plans -->
+  <div class="plan-section">
+    <div class="plan-section-label">👨‍⚕️ For Doctors</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+      <div class="plan-card card">
+        <div class="plan-header">
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="999" data-annual="799">₹999</span>
+            <span class="price-period">/month</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✅ AI Cancer Prediction (50/mo)</li>
+          <li>✅ Patient Management</li>
+          <li>✅ Appointment Scheduling</li>
+          <li>✅ Report Downloads</li>
+          <li>❌ Priority Support</li>
+          <li>❌ Advanced Analytics</li>
+        </ul>
+        <button class="btn btn-outline plan-cta" style="width:100%;justify-content:center"
+                onclick="subscribe('doctor_basic')">
+          Choose Basic
+        </button>
+      </div>
+
+      <div class="plan-card card plan-featured">
+        <div class="plan-popular">Most Popular</div>
+        <div class="plan-header">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="2499" data-annual="1999">₹2,499</span>
+            <span class="price-period">/month</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✅ Unlimited AI Predictions</li>
+          <li>✅ Patient Management</li>
+          <li>✅ Appointment Scheduling</li>
+          <li>✅ Report Downloads</li>
+          <li>✅ Priority Support</li>
+          <li>✅ Advanced Analytics</li>
+        </ul>
+        <button class="btn btn-primary plan-cta" style="width:100%;justify-content:center"
+                onclick="subscribe('doctor_pro')">
+          Choose Pro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patient plans -->
+  <div class="plan-section">
+    <div class="plan-section-label">🧑 For Patients</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+      <div class="plan-card card">
+        <div class="plan-header">
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="299" data-annual="239">₹299</span>
+            <span class="price-period">/month</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✅ Book Appointments</li>
+          <li>✅ View Prescriptions</li>
+          <li>✅ Medical History</li>
+          <li>❌ AI Scan Access</li>
+          <li>❌ Priority Booking</li>
+        </ul>
+        <button class="btn btn-outline plan-cta" style="width:100%;justify-content:center"
+                onclick="subscribe('patient_basic')">
+          Choose Basic
+        </button>
+      </div>
+
+      <div class="plan-card card">
+        <div class="plan-header">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">
+            <span class="price-amount" data-monthly="799" data-annual="639">₹799</span>
+            <span class="price-period">/month</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✅ Book Appointments</li>
+          <li>✅ View Prescriptions</li>
+          <li>✅ Medical History</li>
+          <li>✅ AI Scan Access</li>
+          <li>✅ Priority Booking</li>
+        </ul>
+        <button class="btn btn-primary plan-cta" style="width:100%;justify-content:center"
+                onclick="subscribe('patient_pro')">
+          Choose Pro
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div style="max-width:700px;margin:0 auto;padding:60px 24px">
+  <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;
+             text-align:center;margin-bottom:32px">Frequently asked questions</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How accurate is the AI cancer detection? <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">
+        Our OnchoLens CNN model (MobileNetV2-based) achieves 99.2% accuracy on our validation dataset.
+        However, it is a decision-support tool and must always be validated by a qualified medical professional.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is my patient data secure? <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">
+        Yes. All data is stored in Supabase with row-level security, encrypted at rest, and accessed
+        only through JWT-authenticated APIs. Uploaded scans are stored privately.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I cancel anytime? <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">
+        Yes. Subscriptions can be cancelled any time from your billing dashboard.
+        You'll retain access until the end of your billing period.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="border-top:1px solid var(--card-border);padding:24px;text-align:center;
+               font-size:.82rem;color:var(--text-3)">
+  © 2026 OnchoLens — AI-powered healthcare platform
+</footer>
+
+<div id="toast-container"></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/static/js/pricing.js"></script>
+</body>
+</html>

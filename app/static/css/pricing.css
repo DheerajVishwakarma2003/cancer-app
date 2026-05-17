@@ -1,0 +1,104 @@
+/* pricing.css */
+.plans-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.plan-section-label {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.plan-card {
+  padding: 28px;
+  position: relative;
+  transition: transform var(--t), box-shadow var(--t);
+}
+.plan-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.plan-featured {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.plan-popular {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 3px 14px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+.plan-header { margin-bottom: 20px; }
+.plan-name { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 6px; }
+.plan-price { display: flex; align-items: baseline; gap: 4px; }
+.price-amount { font-family: var(--font-display); font-size: 2rem; font-weight: 800; }
+.price-period { font-size: .82rem; color: var(--text-3); }
+
+.plan-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: .88rem;
+  color: var(--text-2);
+}
+
+/* Toggle */
+.toggle-wrap {
+  width: 48px; height: 26px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: background var(--t);
+}
+.toggle-wrap.active { background: var(--accent); }
+.toggle-knob {
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px; left: 3px;
+  transition: transform var(--t);
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-wrap.active .toggle-knob { transform: translateX(22px); }
+
+/* FAQ */
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+.faq-item { border: 1px solid var(--card-border); border-radius: var(--radius-md); overflow: hidden; }
+.faq-q {
+  width: 100%; padding: 16px 20px;
+  background: var(--card);
+  border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-body); font-size: .9rem; font-weight: 600;
+  color: var(--text); text-align: left;
+}
+.faq-q:hover { background: var(--bg-2); }
+.faq-arrow { transition: transform var(--t); }
+.faq-q.open .faq-arrow { transform: rotate(180deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  padding: 0 20px;
+  font-size: .88rem; color: var(--text-2); line-height: 1.6;
+  background: var(--card);
+  transition: max-height .3s ease, padding .3s ease;
+}
+.faq-a.open { max-height: 200px; padding: 12px 20px 16px; }
+
+@media (max-width: 700px) {
+  .plan-section > div { grid-template-columns: 1fr !important; }
+}

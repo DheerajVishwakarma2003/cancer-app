@@ -1,0 +1,218 @@
+/* doctors.css — Find Doctors page */
+
+/* ── Search bar ─────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.search-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-icon { font-size: 1rem; color: var(--text-3); flex-shrink: 0; }
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--text);
+  min-width: 0;
+}
+.search-input::placeholder { color: var(--text-3); }
+
+/* ── Doctors grid ───────────────────────────────── */
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+/* ── Doctor card ────────────────────────────────── */
+.doctor-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+}
+.doctor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(14,165,233,.3);
+}
+
+.doctor-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.doctor-info { flex: 1; min-width: 0; }
+.doctor-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.doctor-spec { font-size: .8rem; color: var(--text-3); margin-top: 3px; }
+.doctor-bio  { font-size: .82rem; color: var(--text-2); line-height: 1.5;
+               display: -webkit-box; -webkit-line-clamp: 2;
+               -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ── Doctor detail row ──────────────────────────── */
+.doctor-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  color: var(--text-3);
+}
+
+/* ── No-results state ───────────────────────────── */
+.no-doctors {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--text-3);
+}
+.no-doctors .nd-icon { font-size: 3rem; opacity: .35; margin-bottom: 12px; }
+.no-doctors h3 { font-size: 1rem; color: var(--text-2); margin-bottom: 8px; }
+.no-doctors p  { font-size: .85rem; }
+
+/* ── Book modal ─────────────────────────────────── */
+.book-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  padding: 20px;
+}
+.book-modal-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn .25s ease;
+}
+.book-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.book-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.book-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-3);
+  padding: 4px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background var(--t);
+}
+.book-modal-close:hover { background: var(--bg-3); color: var(--text); }
+
+/* ── Doctor info strip inside modal ─────────────── */
+.book-doctor-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-2);
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+}
+.book-doctor-strip .strip-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.strip-name { font-weight: 600; font-size: .9rem; }
+.strip-spec { font-size: .78rem; color: var(--text-3); margin-top: 2px; }
+
+/* ── Specialization filter chips ────────────────── */
+.spec-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.spec-chip {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--card-border);
+  background: transparent;
+  color: var(--text-2);
+  transition: all var(--t);
+  font-family: var(--font-body);
+}
+.spec-chip:hover, .spec-chip.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* ── Fee & availability badges ──────────────────── */
+.fee-badge {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--success);
+}
+.avail-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+  margin-right: 4px;
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 600px) {
+  .doctors-grid { grid-template-columns: 1fr; }
+  .book-modal-card { padding: 20px; }
+}

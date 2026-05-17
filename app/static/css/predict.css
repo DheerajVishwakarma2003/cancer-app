@@ -1,0 +1,279 @@
+/* predict.css — OnchoLens AI Prediction Page */
+
+.predict-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── Upload Zone ──────────────────────────────────── */
+.upload-zone {
+  border: 2px dashed var(--bg-3);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t);
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.upload-zone.has-image { border-style: solid; }
+
+.upload-icon {
+  font-size: 3rem;
+  line-height: 1;
+  filter: grayscale(.5);
+  transition: filter var(--t);
+}
+.upload-zone:hover .upload-icon { filter: grayscale(0); }
+
+.upload-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.upload-sub {
+  font-size: .82rem;
+  color: var(--text-3);
+}
+
+#file-input { display: none; }
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  max-height: 340px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+#preview-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  border-radius: var(--radius-md);
+  transition: opacity var(--t);
+}
+.preview-container:hover .preview-overlay { opacity: 1; }
+.preview-overlay-btn {
+  background: rgba(255,255,255,.9);
+  color: #0f172a;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: .85rem;
+}
+
+.file-meta {
+  font-size: .8rem;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* ── Patient selector ─────────────────────────────── */
+.predict-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* ── Result card ──────────────────────────────────── */
+.result-card {
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  opacity: .06;
+}
+.result-card.detected::before   { background: var(--danger); }
+.result-card.not-detected::before { background: var(--success); }
+
+.result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.result-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.result-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.result-icon.danger  { background: rgba(239,68,68,.15); }
+.result-icon.success { background: rgba(34,197,94,.15); }
+
+.result-prediction {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.result-subtext { font-size: .82rem; color: var(--text-2); margin-top: 4px; }
+
+/* ── Confidence meter ─────────────────────────────── */
+.confidence-section { margin-bottom: 24px; }
+
+.confidence-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .82rem;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+.confidence-pct {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+.meter-track {
+  height: 10px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 1.2s cubic-bezier(.22,1,.36,1);
+}
+
+/* ── Risk breakdown ───────────────────────────────── */
+.risk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.risk-item {
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+.risk-item-label { font-size: .72rem; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.risk-item-value { font-size: 1rem; font-weight: 700; margin-top: 4px; }
+
+/* ── Placeholder (no scan yet) ────────────────────── */
+.result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  gap: 14px;
+  color: var(--text-3);
+  text-align: center;
+}
+.result-placeholder .ph-icon { font-size: 3rem; opacity: .35; }
+.result-placeholder p { font-size: .9rem; max-width: 200px; }
+
+/* ── History table ────────────────────────────────── */
+.history-section {
+  margin-top: 28px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Loading overlay ──────────────────────────────── */
+.predict-loading {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--card-rgb), .9);
+  backdrop-filter: blur(4px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: var(--radius-lg);
+  z-index: 10;
+}
+.predict-loading.active { display: flex; }
+
+.scanning-animation {
+  position: relative;
+  width: 80px; height: 80px;
+}
+.scan-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+.scan-ring:nth-child(2) {
+  inset: 12px;
+  border-top-color: var(--accent-dark);
+  animation-duration: 1.2s;
+  animation-direction: reverse;
+}
+.scan-center {
+  position: absolute;
+  inset: 28px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: .5;
+  animation: pulse 1.4s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:.7;transform:scale(1)} }
+
+.loading-text { font-size: .9rem; color: var(--text-2); font-weight: 500; }
+
+/* ── Download btn ─────────────────────────────────── */
+.download-section {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .predict-grid { grid-template-columns: 1fr; }
+}

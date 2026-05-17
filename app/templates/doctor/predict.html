@@ -1,0 +1,246 @@
+{% from 'macros.html' import doctor_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Cancer Prediction — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <link rel="stylesheet" href="/static/css/predict.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+
+  {{ doctor_sidebar('predict') }}
+
+  <main class="main-content">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">🤖 AI Cancer Prediction</div>
+        <div class="page-subtitle">Upload a medical scan to run OnchoLens CNN analysis</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">📂 Upload Scan</button>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Clinical disclaimer -->
+    <div style="background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);
+                border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:24px;
+                display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text-2)">
+      ⚠️ <strong>Clinical Disclaimer:</strong>&nbsp;
+      AI predictions are decision-support tools. Always validate with clinical assessment.
+    </div>
+
+    <!-- Two-column grid -->
+    <div class="predict-grid">
+
+      <!-- ── LEFT: Upload + Patient + Predict ───────── -->
+      <div>
+        <div class="card" style="padding:24px;position:relative">
+          <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:16px">
+            📤 Upload Medical Scan
+          </h3>
+
+          <!-- Drop zone -->
+          <div class="upload-zone" id="drop-zone">
+            <div id="upload-default">
+              <div class="upload-icon">🩻</div>
+              <div class="upload-title">Drop your scan here</div>
+              <div class="upload-sub">PNG, JPG, WEBP, BMP, TIFF · Max 16 MB</div>
+              <button class="btn btn-primary" style="margin-top:12px;pointer-events:none">Browse Files</button>
+            </div>
+            <div id="preview-wrap" style="display:none;width:100%">
+              <div class="preview-container">
+                <img id="preview-img" src="" alt="Scan preview" />
+                <div class="preview-overlay">
+                  <button class="preview-overlay-btn" id="change-btn">🔄 Change Image</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="file-meta" id="file-meta"></p>
+          <input type="file" id="file-input" accept="image/*" />
+
+          <!-- Controls -->
+          <div class="predict-controls" style="margin-top:20px">
+
+            <!-- Patient selector — REQUIRED -->
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:6px">
+                Patient
+                <span style="color:var(--danger);font-size:.8rem">* required</span>
+                <span id="patient-loading" style="display:none;font-size:.75rem;color:var(--text-3)">
+                  <span class="spinner" style="width:12px;height:12px;border-width:2px"></span> Loading…
+                </span>
+              </label>
+              <select class="form-input" id="patient-select" style="cursor:pointer">
+                <option value="">— Select patient —</option>
+              </select>
+              <!-- Inline error -->
+              <div id="patient-error"
+                   style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+                          color:var(--danger);border-radius:var(--radius-sm);padding:8px 12px;
+                          font-size:.82rem;margin-top:6px">
+              </div>
+              <!-- Patient details chip (shown after selection) -->
+              <div id="patient-chip" style="display:none;margin-top:8px;
+                   background:var(--accent-light);border:1px solid rgba(14,165,233,.2);
+                   border-radius:var(--radius-sm);padding:8px 12px;font-size:.82rem;color:var(--text-2)">
+              </div>
+            </div>
+
+            <!-- Predict button -->
+            <button class="btn btn-primary" id="predict-btn" disabled
+                    style="width:100%;justify-content:center;padding:14px;font-size:.95rem;margin-top:4px">
+              🔍 Run AI Prediction
+            </button>
+            <p style="font-size:.74rem;color:var(--text-3);text-align:center;margin-top:6px">
+              Both a scan and a patient are required to run prediction.
+            </p>
+          </div>
+
+          <!-- Loading overlay -->
+          <div class="predict-loading" id="predict-loading">
+            <div class="scanning-animation">
+              <div class="scan-ring"></div>
+              <div class="scan-ring"></div>
+              <div class="scan-center"></div>
+            </div>
+            <div class="loading-text">Analysing scan with OnchoLens CNN…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Result card ──────────────────────── -->
+      <div>
+        <div class="card result-card" id="result-card">
+
+          <!-- Placeholder -->
+          <div class="result-placeholder" id="result-placeholder">
+            <div class="ph-icon">🔬</div>
+            <p>Select a patient, upload a scan,<br/>then click <strong>Run AI Prediction</strong></p>
+          </div>
+
+          <!-- Result (shown after prediction) -->
+          <div id="result-section" style="display:none">
+
+            <!-- Patient name at top of result -->
+            <div id="res-patient-name"
+                 style="font-size:.82rem;font-weight:600;color:var(--accent);
+                        margin-bottom:16px;padding:8px 12px;
+                        background:var(--accent-light);border-radius:var(--radius-sm)">
+            </div>
+
+            <div class="result-header">
+              <div class="result-status">
+                <div class="result-icon" id="res-icon">🟢</div>
+                <div>
+                  <div class="result-prediction" id="res-prediction">—</div>
+                  <div class="result-subtext"    id="res-subtext">—</div>
+                </div>
+              </div>
+              <span class="badge" id="res-risk-badge" style="font-size:.8rem">—</span>
+            </div>
+
+            <!-- Confidence meter -->
+            <div class="confidence-section">
+              <div class="confidence-label">
+                <span>Model Confidence</span>
+                <span class="confidence-pct" id="res-confidence-pct">—</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-fill" style="width:0%"></div>
+              </div>
+            </div>
+
+            <!-- Risk detail chips -->
+            <div class="risk-grid">
+              <div class="risk-item">
+                <div class="risk-item-label">Cancer Probability</div>
+                <div class="risk-item-value" id="res-probability">—</div>
+              </div>
+              <div class="risk-item">
+                <div class="risk-item-label">Risk Tier</div>
+                <div class="risk-item-value" id="res-risk-tier">—</div>
+              </div>
+              <div class="risk-item">
+                <div class="risk-item-label">Model</div>
+                <div class="risk-item-value" style="font-size:.85rem">OnchoLens CNN</div>
+              </div>
+              <div class="risk-item">
+                <div class="risk-item-label">Input Size</div>
+                <div class="risk-item-value" style="font-size:.85rem">224 × 224 px</div>
+              </div>
+            </div>
+
+            <!-- Download -->
+            <div class="download-section">
+              <button class="btn btn-outline" id="download-btn" style="flex:1;justify-content:center">
+                📄 Download Report
+              </button>
+              <button class="btn btn-primary" onclick="document.getElementById('file-input').click()"
+                      style="flex:1;justify-content:center">
+                🔄 New Scan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /predict-grid -->
+
+    <!-- ── Recent Predictions history ─────────────────── -->
+    <div style="margin-top:28px">
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;
+                  margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        📋 Recent Predictions
+        <a href="/doctor/appointments" style="font-size:.82rem;font-weight:400;color:var(--accent)">
+          View appointments →
+        </a>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Result</th>
+                <th>Detected</th>
+                <th>Confidence</th>
+                <th>Download</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody">
+              <tr><td colspan="6" style="text-align:center;color:var(--text-3)">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/predict.js"></script>
+<script>
+  /* Show patient detail chip on selection */
+  document.getElementById('patient-select').addEventListener('change', function () {
+    const chip    = document.getElementById('patient-chip');
+    const loading = document.getElementById('patient-loading');
+    if (loading) loading.style.display = 'none';
+    if (!this.value) { chip.style.display = 'none'; return; }
+    const opt = this.options[this.selectedIndex];
+    chip.style.display  = 'block';
+    chip.innerHTML = `<strong>Selected:</strong> ${opt.textContent}`;
+  });
+</script>
+</body>
+</html>

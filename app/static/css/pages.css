@@ -1,0 +1,331 @@
+/* pages.css — shared styles for all doctor/patient inner pages */
+
+/* ── Mobile hamburger ─────────────────────────────── */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text);
+  padding: 4px;
+}
+
+/* ── Page header ──────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.page-subtitle {
+  font-size: .85rem;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.page-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* ── Section card ─────────────────────────────────── */
+.section-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.section-card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ── Empty state ──────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-3);
+}
+.empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: .4; }
+.empty-state h3 { font-size: 1rem; color: var(--text-2); margin-bottom: 8px; }
+.empty-state p  { font-size: .85rem; }
+
+/* ── Status pills ─────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+.pill-pending   { background: rgba(234,179,8,.15);  color: #b45309; }
+.pill-confirmed { background: rgba(34,197,94,.15);  color: #15803d; }
+.pill-completed { background: rgba(14,165,233,.15); color: #0369a1; }
+.pill-cancelled { background: rgba(239,68,68,.15);  color: #b91c1c; }
+
+/* ── Profile form ─────────────────────────────────── */
+.profile-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.profile-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+}
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 24px; height: 24px;
+  background: var(--accent);
+  border: 2px solid var(--card);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .65rem;
+  cursor: pointer;
+  color: #fff;
+}
+.profile-meta h2 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
+.profile-meta p  { font-size: .85rem; color: var(--text-3); margin-top: 4px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-grid .span-2 { grid-column: 1 / -1; }
+
+/* ── Appointment card ─────────────────────────────── */
+.apt-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  transition: box-shadow var(--t);
+}
+.apt-card:hover { box-shadow: var(--shadow-sm); }
+.apt-date-box {
+  min-width: 56px;
+  height: 56px;
+  background: var(--accent-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.apt-date-day   { font-size: 1.3rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.apt-date-month { font-size: .65rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+.apt-info { flex: 1; min-width: 0; }
+.apt-name   { font-weight: 600; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.apt-reason { font-size: .78rem; color: var(--text-3); margin-top: 2px; }
+.apt-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── Prescription card ────────────────────────────── */
+.rx-card {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.rx-header {
+  padding: 14px 16px;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.rx-header:hover { background: var(--bg-3); }
+.rx-title { font-weight: 600; font-size: .9rem; }
+.rx-date  { font-size: .78rem; color: var(--text-3); }
+.rx-body  { padding: 16px; display: none; }
+.rx-body.open { display: block; }
+.rx-med-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.rx-med-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  font-size: .85rem;
+}
+.rx-med-icon { font-size: 1.1rem; }
+.rx-med-name { font-weight: 600; flex: 1; }
+.rx-med-dose { font-size: .78rem; color: var(--text-3); }
+
+/* ── Patient card ─────────────────────────────────── */
+.patient-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  cursor: pointer;
+  transition: all var(--t);
+}
+.patient-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.patient-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+
+/* ── History timeline ─────────────────────────────── */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--bg-3);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+.timeline-dot {
+  position: absolute;
+  left: -24px; top: 4px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--card);
+  flex-shrink: 0;
+}
+.timeline-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+.timeline-date { font-size: .75rem; color: var(--text-3); margin-bottom: 4px; }
+.timeline-title { font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+.timeline-detail { font-size: .82rem; color: var(--text-2); }
+
+/* ── Modal ────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; padding: 20px;
+}
+.modal-card {
+  width: 100%; max-width: 480px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn .25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+.modal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.2rem; color: var(--text-3); line-height: 1;
+  padding: 4px;
+}
+.modal-close:hover { color: var(--text); }
+
+/* ── Search bar ───────────────────────────────────── */
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-2);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--t);
+}
+.search-box:focus-within { border-color: var(--accent); }
+.search-box input {
+  flex: 1; border: none; background: transparent;
+  outline: none; font-family: var(--font-body);
+  font-size: .88rem; color: var(--text);
+}
+.search-box input::placeholder { color: var(--text-3); }
+
+/* ── Filter chips ─────────────────────────────────── */
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--card-border);
+  background: transparent;
+  color: var(--text-2);
+  transition: all var(--t);
+  font-family: var(--font-body);
+}
+.chip:hover, .chip.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: 1; }
+  .apt-actions { flex-direction: column; }
+  .page-header { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .main-content { padding: 12px; }
+}

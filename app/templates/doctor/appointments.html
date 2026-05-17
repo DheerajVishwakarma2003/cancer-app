@@ -1,0 +1,115 @@
+{% from 'macros.html' import doctor_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointments — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ doctor_sidebar('appointments') }}
+
+  <main class="main-content">
+    <!-- Top bar -->
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">📅 Appointments</div>
+        <div class="page-subtitle">Manage your patient appointments</div>
+      </div>
+      <div class="page-actions">
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(234,179,8,.1)">⏳</div>
+        <div class="stat-value" id="cnt-pending">—</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(34,197,94,.1)">✅</div>
+        <div class="stat-value" id="cnt-confirmed">—</div>
+        <div class="stat-label">Confirmed</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(14,165,233,.1)">🏁</div>
+        <div class="stat-value" id="cnt-completed">—</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(239,68,68,.1)">❌</div>
+        <div class="stat-value" id="cnt-cancelled">—</div>
+        <div class="stat-label">Cancelled</div>
+      </div>
+    </div>
+
+    <!-- Filter + Search -->
+    <div class="section-card">
+      <div class="search-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Search by patient or reason…" oninput="filterApts()" />
+        </div>
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-status="all"       onclick="setFilter(this,'all')">All</button>
+        <button class="chip"        data-status="pending"   onclick="setFilter(this,'pending')">⏳ Pending</button>
+        <button class="chip"        data-status="confirmed" onclick="setFilter(this,'confirmed')">✅ Confirmed</button>
+        <button class="chip"        data-status="completed" onclick="setFilter(this,'completed')">🏁 Completed</button>
+        <button class="chip"        data-status="cancelled" onclick="setFilter(this,'cancelled')">❌ Cancelled</button>
+      </div>
+
+      <!-- Appointments list -->
+      <div id="apt-list">
+        <div class="empty-state">
+          <div class="spinner" style="width:32px;height:32px;margin:0 auto 12px"></div>
+          Loading appointments…
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Action Modal -->
+<div id="action-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title">📅 Update Appointment</span>
+      <button class="modal-close" onclick="document.getElementById('action-modal').style.display='none'">✕</button>
+    </div>
+    <input type="hidden" id="modal-apt-id" />
+    <div style="margin-bottom:16px">
+      <div class="form-label" style="margin-bottom:6px">Patient</div>
+      <div id="modal-patient-name" style="font-weight:600;font-size:.95rem"></div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="form-label" style="margin-bottom:6px">Slot</div>
+      <div id="modal-slot" style="font-size:.88rem;color:var(--text-2)"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label class="form-label">Reason</label>
+      <textarea class="form-input" id="modal-reason" rows="2" readonly style="resize:none"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label class="form-label">Notes (optional)</label>
+      <textarea class="form-input" id="modal-notes" rows="2" placeholder="Add clinical notes…" style="resize:none"></textarea>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary"  style="flex:1;justify-content:center" onclick="updateApt('confirmed')">✅ Confirm</button>
+      <button class="btn btn-outline"  style="flex:1;justify-content:center" onclick="updateApt('completed')">🏁 Complete</button>
+      <button class="btn btn-danger"   style="flex:1;justify-content:center" onclick="updateApt('cancelled')">❌ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/doctor-appointments.js"></script>
+</body>
+</html>

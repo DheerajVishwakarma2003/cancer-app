@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnchoLens — AI Cancer Detection Platform</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/home.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-brand">
+      <span class="brand-icon">🔬</span>
+      <span>OnchoLens</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="/pricing">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle">🌙</button>
+      <a href="/login"  class="btn btn-outline">Log in</a>
+      <a href="/signup" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🏥 Trusted by 1,200+ healthcare professionals</div>
+    <h1 class="hero-title">
+      Cancer detection<br/>
+      <span class="hero-gradient">powered by AI</span>
+    </h1>
+    <p class="hero-sub">
+      OnchoLens uses deep learning to analyse medical scans in seconds —
+      giving doctors a powerful second opinion and patients faster answers.
+    </p>
+    <div class="hero-cta">
+      <a href="/signup" class="btn btn-primary" style="padding:14px 32px;font-size:1rem">
+        Start free trial →
+      </a>
+      <a href="#how-it-works" class="btn btn-outline" style="padding:14px 32px;font-size:1rem">
+        See how it works
+      </a>
+    </div>
+    <div class="hero-metrics">
+      <div class="metric"><strong>99.2%</strong><span>Accuracy</span></div>
+      <div class="metric-divider"></div>
+      <div class="metric"><strong>&lt;3s</strong><span>Per scan</span></div>
+      <div class="metric-divider"></div>
+      <div class="metric"><strong>50K+</strong><span>Scans analysed</span></div>
+    </div>
+  </div>
+
+  <!-- Fake scan preview card -->
+  <div class="hero-visual">
+    <div class="scan-card">
+      <div class="scan-header">
+        <span class="scan-dot red"></span>
+        <span class="scan-dot yellow"></span>
+        <span class="scan-dot green"></span>
+        <span style="margin-left:8px;font-size:.8rem;color:var(--text-3)">OnchoLens CNN · Live Preview</span>
+      </div>
+      <div class="scan-body">
+        <div class="scan-placeholder">
+          <div class="scan-grid"></div>
+          <div class="scan-cross"></div>
+          <div class="scan-label">🩻 CT Scan · Patient #A2847</div>
+        </div>
+        <div class="scan-result">
+          <div class="scan-result-row">
+            <span>Result</span>
+            <span class="badge badge-danger">Cancer Detected</span>
+          </div>
+          <div class="scan-result-row">
+            <span>Confidence</span>
+            <strong style="color:var(--danger)">97.2%</strong>
+          </div>
+          <div class="scan-result-row">
+            <span>Risk Level</span>
+            <span style="color:var(--danger);font-weight:600">High Risk</span>
+          </div>
+          <div class="scan-meter">
+            <div class="scan-meter-fill" style="width:97.2%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ───────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag">Features</div>
+      <h2>Everything you need for AI-assisted diagnostics</h2>
+      <p>Built for doctors and patients, with privacy and security at the core.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>MobileNetV2 CNN</h3>
+        <p>Our fine-tuned model processes 224×224 medical scans with sigmoid confidence scoring in under 3 seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>HIPAA-Ready Security</h3>
+        <p>JWT auth, Supabase RLS policies, encrypted uploads, and role-based access keep data protected.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Downloadable Reports</h3>
+        <p>Every prediction generates a timestamped clinical report ready for patient records or second opinion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Appointment Management</h3>
+        <p>Doctors and patients manage their entire relationship — bookings, prescriptions, history — in one place.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <h3>Razorpay Subscriptions</h3>
+        <p>Flexible monthly plans for doctors and patients, with instant payment verification and billing dashboards.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Analytics Dashboard</h3>
+        <p>Admin and doctor dashboards show prediction stats, detection rates, appointment loads, and revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ────────────────────────────────── -->
+<section class="how" id="how-it-works">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag">How it works</div>
+      <h2>From scan to diagnosis in seconds</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Upload the scan</h3>
+        <p>Drag and drop any PNG, JPG, or TIFF medical image. Supports CT, MRI, X-ray, and pathology slides.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>AI analysis</h3>
+        <p>OnchoLens CNN preprocesses the image to 224×224, runs MobileNetV2 inference, and returns a sigmoid score.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Get results</h3>
+        <p>Receive a risk tier, confidence percentage, and downloadable report — all in under 3 seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Ready to add AI to your practice?</h2>
+    <p>Join 1,200+ doctors using OnchoLens to deliver faster, more accurate cancer screening.</p>
+    <a href="/signup" class="btn btn-primary" style="padding:14px 36px;font-size:1rem">
+      Get started for free →
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer class="footer">
+  <div class="section-container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span>🔬</span>
+      <span style="font-family:var(--font-display);font-weight:700">OnchoLens</span>
+    </div>
+    <p style="font-size:.82rem;color:var(--text-3)">
+      © 2026 OnchoLens. AI-powered healthcare platform. All rights reserved.
+    </p>
+    <div style="display:flex;gap:20px;font-size:.85rem">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+</body>
+</html>

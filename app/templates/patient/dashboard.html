@@ -1,0 +1,125 @@
+{% from 'macros.html' import patient_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Dashboard — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ patient_sidebar('dashboard') }}
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">My Health Dashboard 🩺</div>
+        <div class="page-subtitle">Welcome back! Here's your health overview</div>
+      </div>
+      <div class="page-actions">
+        <a href="/patient/doctors" class="btn btn-primary">📅 Book Appointment</a>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(14,165,233,.1)">📅</div>
+        <div class="stat-value" id="stat-apts">—</div>
+        <div class="stat-label">Appointments</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(34,197,94,.1)">💊</div>
+        <div class="stat-value" id="stat-rx">—</div>
+        <div class="stat-label">Prescriptions</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(239,68,68,.1)">🔬</div>
+        <div class="stat-value" id="stat-scans">—</div>
+        <div class="stat-label">AI Scans</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;margin-bottom:24px">
+      <div class="card" style="padding:24px">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:16px">⚡ Quick Actions</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="/patient/doctors"       class="btn btn-primary" style="justify-content:center">🔍 Find & Book a Doctor</a>
+          <a href="/patient/appointments"  class="btn btn-outline" style="justify-content:center">📅 My Appointments</a>
+          <a href="/patient/prescriptions" class="btn btn-outline" style="justify-content:center">💊 My Prescriptions</a>
+          <a href="/patient/history"       class="btn btn-outline" style="justify-content:center">📁 Medical History</a>
+        </div>
+      </div>
+
+      <div class="card" style="padding:24px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">📅 Recent Appointments</div>
+          <a href="/patient/appointments" style="font-size:.8rem;color:var(--accent)">View all →</a>
+        </div>
+        <div id="recent-apts">
+          <div style="text-align:center;color:var(--text-3);font-size:.85rem;padding:20px">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">💊 Recent Prescriptions</div>
+        <a href="/patient/prescriptions" style="font-size:.8rem;color:var(--accent)">View all →</a>
+      </div>
+      <div id="recent-rx">
+        <div style="text-align:center;color:var(--text-3);font-size:.85rem;padding:20px">Loading…</div>
+      </div>
+    </div>
+  </main>
+</div>
+<div id="toast-container"></div>
+<script>
+(async function(){
+  if(!Auth.isLoggedIn()){ window.location.href='/login'; return; }
+  document.getElementById('logout-btn')?.addEventListener('click',e=>{e.preventDefault();Auth.clearSession();});
+  try {
+    const [aptRes,rxRes,scanRes] = await Promise.all([
+      Auth.apiFetch('/api/patients/appointments'),
+      Auth.apiFetch('/api/patients/prescriptions'),
+      Auth.apiFetch('/api/patients/predictions'),
+    ]);
+    const apts  = aptRes  ? await aptRes.json()  : [];
+    const rxs   = rxRes   ? await rxRes.json()   : [];
+    const scans = scanRes ? await scanRes.json() : [];
+    document.getElementById('stat-apts').textContent  = apts.length;
+    document.getElementById('stat-rx').textContent    = rxs.length;
+    document.getElementById('stat-scans').textContent = scans.length;
+
+    const pillClass = s => ({pending:'pill-pending',confirmed:'pill-confirmed',completed:'pill-completed',cancelled:'pill-cancelled'}[s]||'');
+    const recentApts = document.getElementById('recent-apts');
+    recentApts.innerHTML = apts.slice(0,4).map(a=>`
+      <div class="apt-card" style="margin-bottom:8px">
+        <div class="apt-date-box">
+          <span class="apt-date-day">${a.slot?new Date(a.slot).getDate():'—'}</span>
+          <span class="apt-date-month">${a.slot?new Date(a.slot).toLocaleString('default',{month:'short'}).toUpperCase():'—'}</span>
+        </div>
+        <div class="apt-info">
+          <div class="apt-name">👨‍⚕️ ${a.doctor_name||'Doctor'}</div>
+          <div class="apt-reason">${a.reason||'Consultation'}</div>
+        </div>
+        <span class="pill ${pillClass(a.status)}">${a.status}</span>
+      </div>`).join('') || '<p style="color:var(--text-3);font-size:.85rem;text-align:center;padding:12px">No appointments yet</p>';
+
+    const recentRx = document.getElementById('recent-rx');
+    recentRx.innerHTML = rxs.slice(0,3).map(rx=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-border)">
+        <div>
+          <div style="font-weight:600;font-size:.88rem">👨‍⚕️ Dr. ${rx.doctor_name||rx.doctor_id?.slice(0,8)||'—'}</div>
+          <div style="font-size:.78rem;color:var(--text-3)">${rx.created_at?new Date(rx.created_at).toLocaleDateString():''} · ${(rx.medications||[]).length} medication(s)</div>
+        </div>
+        <button class="btn btn-outline" style="padding:4px 12px;font-size:.76rem" onclick="window.location='/patient/prescriptions'">View</button>
+      </div>`).join('') || '<p style="color:var(--text-3);font-size:.85rem;text-align:center;padding:12px">No prescriptions yet</p>';
+  } catch(e){ console.error(e); }
+})();
+</script>
+</body>
+</html>

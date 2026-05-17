@@ -1,0 +1,90 @@
+{% from 'macros.html' import doctor_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prescriptions — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ doctor_sidebar('prescriptions') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">💊 Prescriptions</div>
+        <div class="page-subtitle">Write and manage patient prescriptions</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary" onclick="openWriteModal()">✏️ New Prescription</button>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="section-card">
+      <div class="search-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Search by patient or medication…" oninput="filterRx()" />
+        </div>
+      </div>
+      <div id="rx-list">
+        <div class="empty-state">
+          <div class="spinner" style="width:32px;height:32px;margin:0 auto 12px"></div>
+          Loading prescriptions…
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Write Prescription Modal -->
+<div id="write-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-card" style="max-width:540px">
+    <div class="modal-header">
+      <span class="modal-title">✏️ Write Prescription</span>
+      <button class="modal-close" onclick="document.getElementById('write-modal').style.display='none'">✕</button>
+    </div>
+
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Patient ID</label>
+      <input class="form-input" type="text" id="rx-patient-id" placeholder="Patient user ID" />
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Appointment (optional)</label>
+      <select class="form-input" id="rx-apt-id">
+        <option value="">— None —</option>
+      </select>
+    </div>
+
+    <!-- Medications list -->
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <label class="form-label" style="margin:0">Medications</label>
+        <button class="btn btn-outline" style="padding:4px 12px;font-size:.78rem" onclick="addMedRow()">+ Add</button>
+      </div>
+      <div id="med-rows" style="display:flex;flex-direction:column;gap:8px">
+        <!-- rows added by JS -->
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:20px">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="rx-notes" rows="3" placeholder="Additional instructions…" style="resize:vertical"></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="savePrescription()">
+      💾 Save Prescription
+    </button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/doctor-prescriptions.js"></script>
+</body>
+</html>

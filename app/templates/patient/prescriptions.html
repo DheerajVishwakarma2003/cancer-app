@@ -1,0 +1,49 @@
+{% from 'macros.html' import patient_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Prescriptions — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ patient_sidebar('prescriptions') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">💊 My Prescriptions</div>
+        <div class="page-subtitle">View medications prescribed by your doctors</div>
+      </div>
+      <div class="page-actions">
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="section-card">
+      <div class="search-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Search by doctor or medication…" oninput="filterRx()" />
+        </div>
+      </div>
+      <div id="rx-list">
+        <div class="empty-state">
+          <div class="spinner" style="width:32px;height:32px;margin:0 auto 12px"></div>
+          Loading prescriptions…
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/patient-prescriptions.js"></script>
+</body>
+</html>

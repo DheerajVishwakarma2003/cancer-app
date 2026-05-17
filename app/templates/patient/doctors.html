@@ -1,0 +1,135 @@
+{% from 'macros.html' import patient_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Doctors — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <link rel="stylesheet" href="/static/css/doctors.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+
+  {{ patient_sidebar('doctors') }}
+
+  <main class="main-content">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">🔍 Find Doctors</div>
+        <div class="page-subtitle">Browse and book verified healthcare professionals</div>
+      </div>
+      <div class="page-actions">
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="Search by name, specialization, or bio…"
+        oninput="filterDoctors(this.value)"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Specialization filter chips (built by JS) -->
+    <div class="spec-chips" id="spec-chips"></div>
+
+    <!-- Doctors grid -->
+    <div class="doctors-grid" id="doctors-grid">
+      <div class="no-doctors">
+        <div class="nd-icon" style="font-size:2rem;opacity:1">
+          <span class="spinner" style="width:36px;height:36px;display:inline-block"></span>
+        </div>
+        <h3 style="margin-top:16px">Loading doctors…</h3>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+<!-- ── Book Appointment Modal ──────────────────────────── -->
+<div id="book-modal"
+     class="book-modal-overlay"
+     style="display:none"
+     onclick="closeBookModal(event)">
+
+  <div class="book-modal-card">
+
+    <!-- Modal header -->
+    <div class="book-modal-header">
+      <span class="book-modal-title">📅 Book Appointment</span>
+      <button class="book-modal-close" onclick="closeBookModal()">✕</button>
+    </div>
+
+    <!-- Hidden doctor ID -->
+    <input type="hidden" id="modal-doctor-id" />
+
+    <!-- Doctor strip -->
+    <div class="book-doctor-strip">
+      <div class="strip-avatar" id="modal-initials">DR</div>
+      <div>
+        <div class="strip-name"  id="modal-doctor-name">—</div>
+        <div class="strip-spec"  id="modal-doctor-spec">—</div>
+      </div>
+    </div>
+
+    <!-- Error banner -->
+    <div id="modal-error"
+         style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+                color:var(--danger);border-radius:var(--radius-sm);padding:10px 12px;
+                font-size:.84rem;margin-bottom:14px">
+    </div>
+
+    <!-- Date & time -->
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Preferred Date &amp; Time <span style="color:var(--danger)">*</span></label>
+      <input class="form-input" type="datetime-local" id="modal-slot" required />
+    </div>
+
+    <!-- Reason -->
+    <div class="form-group" style="margin-bottom:20px">
+      <label class="form-label">Reason for visit</label>
+      <textarea
+        class="form-input"
+        id="modal-reason"
+        rows="3"
+        placeholder="Briefly describe your symptoms or concern…"
+        style="resize:vertical"
+      ></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-outline"
+              style="flex:1;justify-content:center"
+              onclick="closeBookModal()">
+        Cancel
+      </button>
+      <button class="btn btn-primary"
+              id="confirm-book-btn"
+              style="flex:1;justify-content:center"
+              onclick="confirmBooking()">
+        📅 Confirm Booking
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="toast-container"></div>
+<script src="/static/js/doctors.js"></script>
+</body>
+</html>

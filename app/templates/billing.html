@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <link rel="stylesheet" href="/static/css/billing.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+
+  <!-- Generic sidebar that works for both roles -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🔬</div>
+      <span>OnchoLens</span>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <div class="nav-section-label">Account</div>
+      <!-- Filled by JS based on role -->
+      <a href="#" class="nav-item" id="nav-home"><span class="nav-icon">🏠</span> Dashboard</a>
+      <a href="/billing" class="nav-item active"><span class="nav-icon">💳</span> Billing</a>
+      <a href="/pricing" class="nav-item"><span class="nav-icon">⬆️</span> Upgrade Plan</a>
+      <a href="/login" class="nav-item" id="logout-btn"><span class="nav-icon">🚪</span> Logout</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle">🌙</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">💳 Billing &amp; Subscription</div>
+        <div class="page-subtitle">Manage your plan and view activity</div>
+      </div>
+      <div class="page-actions">
+        <a href="/pricing" class="btn btn-primary">⬆️ Upgrade Plan</a>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Active plan card -->
+    <div class="card billing-hero" id="active-plan-card">
+      <div class="billing-plan-info">
+        <div class="billing-plan-icon">📦</div>
+        <div>
+          <div style="font-size:.75rem;color:var(--text-3);font-weight:700;
+                      text-transform:uppercase;letter-spacing:.06em">Current Plan</div>
+          <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-top:4px"
+               id="current-plan-name">Loading…</div>
+          <div style="font-size:.85rem;color:var(--text-2);margin-top:4px"
+               id="current-plan-expiry"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+        <span class="badge badge-success" id="plan-status-badge">Active</span>
+        <a href="/pricing" class="btn btn-outline" style="font-size:.82rem;padding:6px 14px">Change Plan</a>
+      </div>
+    </div>
+
+    <!-- Plan features -->
+    <div class="card" style="padding:20px 24px;margin-top:16px">
+      <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+                  color:var(--text-3);margin-bottom:12px">What's included</div>
+      <div id="plan-features" style="display:flex;flex-wrap:wrap;gap:4px 24px">
+        <div style="font-size:.85rem;color:var(--text-3)">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-top:20px">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(14,165,233,.1)">📅</div>
+        <div class="stat-value" id="stat-total-subs">—</div>
+        <div class="stat-label">Subscriptions</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(34,197,94,.1)">✅</div>
+        <div class="stat-value" id="stat-active-subs">—</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(99,102,241,.1)">💰</div>
+        <div class="stat-value" id="stat-total-spent">—</div>
+        <div class="stat-label">Total Spent</div>
+      </div>
+    </div>
+
+    <!-- Two-col: activity + billing history -->
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:20px;margin-top:24px">
+
+      <!-- Activity feed -->
+      <div class="card" style="padding:24px">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:16px">
+          ⚡ Recent Activity
+        </div>
+        <div id="activity-feed">
+          <div style="text-align:center;color:var(--text-3);font-size:.85rem;padding:20px">Loading…</div>
+        </div>
+      </div>
+
+      <!-- Billing history -->
+      <div class="card" style="padding:24px">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:16px">
+          📜 Billing History
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th><th>Plan</th><th>Order ID</th>
+                <th>Payment ID</th><th>Status</th><th>Expires</th>
+              </tr>
+            </thead>
+            <tbody id="billing-tbody">
+              <tr><td colspan="6" style="text-align:center;color:var(--text-3)">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script>
+  // Set correct dashboard link based on role
+  const role = Auth.getRole ? Auth.getRole() : localStorage.getItem('oncolens_role');
+  const homeLink = document.getElementById('nav-home');
+  if (homeLink) {
+    if (role === 'doctor')  homeLink.href = '/doctor/dashboard';
+    else if (role === 'admin') homeLink.href = '/admin/dashboard';
+    else homeLink.href = '/patient/dashboard';
+  }
+</script>
+<script src="/static/js/billing.js"></script>
+</body>
+</html>

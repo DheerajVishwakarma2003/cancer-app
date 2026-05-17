@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/login.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="auth-layout">
+  <div class="auth-hero">
+    <div class="hero-inner">
+      <div class="hero-logo">🔬</div>
+      <h1>Join OnchoLens</h1>
+      <p>Create your account and start using AI-powered cancer detection today.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span>Free</span><small>Trial period</small></div>
+        <div class="hero-stat"><span>3</span><small>User roles</small></div>
+        <div class="hero-stat"><span>24/7</span><small>AI available</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-topbar">
+      <button class="theme-toggle">🌙</button>
+    </div>
+    <div class="auth-card">
+      <div style="margin-bottom:28px">
+        <h2 style="font-family:var(--font-display);font-size:1.7rem;font-weight:800">Create account</h2>
+        <p style="color:var(--text-2);margin-top:6px;font-size:.9rem">Start your OnchoLens journey</p>
+      </div>
+
+      <div id="error-banner" class="error-banner" style="display:none"></div>
+
+      <!-- Role selector -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        <label class="role-option" id="role-doctor">
+          <input type="radio" name="role" value="doctor" />
+          <div class="role-card">
+            <span style="font-size:1.5rem">👨‍⚕️</span>
+            <strong>Doctor</strong>
+            <small>Use AI prediction tools</small>
+          </div>
+        </label>
+        <label class="role-option" id="role-patient">
+          <input type="radio" name="role" value="patient" checked />
+          <div class="role-card">
+            <span style="font-size:1.5rem">🧑</span>
+            <strong>Patient</strong>
+            <small>Book appointments & more</small>
+          </div>
+        </label>
+      </div>
+
+      <form id="signup-form" novalidate>
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="name" placeholder="Dr. Jane Smith" required />
+        </div>
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Email address</label>
+          <input class="form-input" type="email" id="email" placeholder="jane@hospital.com" required />
+        </div>
+        <div class="form-group" style="margin-bottom:24px">
+          <label class="form-label">Password <span style="color:var(--text-3);font-weight:400">(min 8 chars)</span></label>
+          <input class="form-input" type="password" id="password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-btn"
+                style="width:100%;justify-content:center;padding:13px;font-size:.95rem">
+          Create account
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:24px;font-size:.88rem;color:var(--text-2)">
+        Already have an account?
+        <a href="/login" style="font-weight:600">Sign in →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.role-option input { display:none; }
+.role-card {
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all var(--t);
+  text-align: center;
+}
+.role-card strong { font-size: .88rem; }
+.role-card small  { font-size: .75rem; color: var(--text-3); }
+.role-option input:checked + .role-card {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.role-option input:checked + .role-card strong { color: var(--accent); }
+</style>
+
+<div id="toast-container"></div>
+<script src="/static/js/theme.js"></script>
+<script>
+(function(){
+  const form      = document.getElementById("signup-form");
+  const submitBtn = document.getElementById("submit-btn");
+  const errBanner = document.getElementById("error-banner");
+
+  function showError(msg){ errBanner.textContent=msg; errBanner.style.display="block"; }
+  function clearError()  { errBanner.style.display="none"; }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); clearError();
+    const name     = document.getElementById("name").value.trim();
+    const email    = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const role     = document.querySelector('input[name="role"]:checked')?.value || "patient";
+
+    if (!name||!email||!password){ showError("All fields are required."); return; }
+    if (password.length < 8){ showError("Password must be at least 8 characters."); return; }
+
+    submitBtn.disabled=true;
+    submitBtn.innerHTML='<span class="spinner"></span> Creating account…';
+
+    try {
+      const res  = await fetch("/api/auth/register",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,email,password,role})
+      });
+      const data = await res.json();
+      if (!res.ok){ showError(data.error||"Registration failed."); return; }
+      Auth.setSession(data.token, data.role);
+      toast.success("Account created!");
+      setTimeout(()=>{
+        window.location.href = data.role==="doctor" ? "/doctor/dashboard" : "/patient/dashboard";
+      }, 800);
+    } catch(_){ showError("Network error."); }
+    finally { submitBtn.disabled=false; submitBtn.innerHTML="Create account"; }
+  });
+})();
+</script>
+</body>
+</html>

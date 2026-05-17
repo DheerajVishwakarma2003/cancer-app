@@ -1,0 +1,25 @@
+/* billing.css */
+.billing-hero {
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--accent-light), var(--card));
+  border: 1.5px solid rgba(14,165,233,.2);
+}
+.billing-plan-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.billing-plan-icon {
+  width: 52px; height: 52px;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}

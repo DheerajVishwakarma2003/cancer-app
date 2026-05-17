@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Setup — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/login.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="auth-layout">
+  <!-- Left hero -->
+  <div class="auth-hero" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+    <div class="hero-inner">
+      <div class="hero-logo">🛡️</div>
+      <h1>Admin Setup</h1>
+      <p>Create the first admin account for OnchoLens. This page only works once and requires the setup key from your <code>.env</code> file.</p>
+      <div style="margin-top:24px;background:rgba(255,255,255,.12);border-radius:var(--radius-md);padding:16px;font-size:.82rem;opacity:.9">
+        <strong>After setup:</strong><br/>
+        • Remove or unset <code>ADMIN_SETUP_KEY</code> from <code>.env</code><br/>
+        • This endpoint will be disabled automatically
+      </div>
+    </div>
+  </div>
+
+  <!-- Right form -->
+  <div class="auth-form-panel">
+    <div class="auth-topbar">
+      <button class="theme-toggle">🌙</button>
+    </div>
+    <div class="auth-card">
+      <h2 style="font-family:var(--font-display);font-size:1.7rem;font-weight:800;margin-bottom:6px">
+        🛡️ Create Admin Account
+      </h2>
+      <p style="color:var(--text-2);font-size:.9rem;margin-bottom:28px">
+        One-time setup. Requires the <code>ADMIN_SETUP_KEY</code> from your <code>.env</code>.
+      </p>
+
+      <div id="error-banner"   class="error-banner"  style="display:none"></div>
+      <div id="success-banner" style="display:none;background:rgba(34,197,94,.1);border:1px solid
+           rgba(34,197,94,.3);color:var(--success);border-radius:var(--radius-sm);
+           padding:12px 14px;font-size:.85rem;margin-bottom:20px"></div>
+
+      <form id="setup-form" novalidate>
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Setup Key <span style="color:var(--danger)">*</span></label>
+          <input class="form-input" type="password" id="setup-key"
+                 placeholder="Value of ADMIN_SETUP_KEY in .env" required />
+          <small style="color:var(--text-3);font-size:.75rem;margin-top:4px;display:block">
+            Default in .env.example: <code>oncolens-setup-2026</code>
+          </small>
+        </div>
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Admin Name</label>
+          <input class="form-input" type="text" id="admin-name"
+                 placeholder="Super Admin" value="Super Admin" />
+        </div>
+        <div class="form-group" style="margin-bottom:14px">
+          <label class="form-label">Admin Email <span style="color:var(--danger)">*</span></label>
+          <input class="form-input" type="email" id="admin-email"
+                 placeholder="admin@oncolens.com" required />
+        </div>
+        <div class="form-group" style="margin-bottom:24px">
+          <label class="form-label">Password <span style="color:var(--danger)">*</span>
+            <span style="font-weight:400;color:var(--text-3)">(min 8 chars)</span>
+          </label>
+          <input class="form-input" type="password" id="admin-password"
+                 placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-btn"
+                style="width:100%;justify-content:center;padding:13px;
+                       background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+          🛡️ Create Admin Account
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px;font-size:.88rem;color:var(--text-2)">
+        Already have an account? <a href="/login">Sign in →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script>
+(function () {
+  const form      = document.getElementById('setup-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const errBanner = document.getElementById('error-banner');
+  const okBanner  = document.getElementById('success-banner');
+
+  function showErr(msg) { errBanner.textContent = msg; errBanner.style.display = 'block'; okBanner.style.display = 'none'; }
+  function showOk(msg)  { okBanner.textContent  = msg; okBanner.style.display  = 'block'; errBanner.style.display = 'none'; }
+  function clearAll()   { errBanner.style.display = 'none'; okBanner.style.display = 'none'; }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); clearAll();
+
+    const setupKey = document.getElementById('setup-key').value.trim();
+    const name     = document.getElementById('admin-name').value.trim() || 'Super Admin';
+    const email    = document.getElementById('admin-email').value.trim().toLowerCase();
+    const password = document.getElementById('admin-password').value;
+
+    if (!setupKey)         { showErr('Setup key is required.'); return; }
+    if (!email)            { showErr('Email is required.'); return; }
+    if (password.length < 8) { showErr('Password must be at least 8 characters.'); return; }
+
+    submitBtn.disabled  = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Creating…';
+
+    try {
+      const res  = await fetch('/api/auth/setup-admin', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ setup_key: setupKey, email, password, name }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) { showErr(data.error || 'Setup failed.'); return; }
+
+      // Save session
+      localStorage.setItem('oncolens_token', data.token);
+      localStorage.setItem('oncolens_role',  data.role);
+
+      showOk('✅ Admin account created! Redirecting to dashboard…');
+      setTimeout(() => { window.location.href = '/admin/dashboard'; }, 1500);
+
+    } catch { showErr('Network error. Make sure the server is running.'); }
+    finally  { submitBtn.disabled = false; submitBtn.innerHTML = '🛡️ Create Admin Account'; }
+  });
+})();
+</script>
+</body>
+</html>

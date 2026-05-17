@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/login.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="auth-layout">
+  <!-- Left panel (decorative) -->
+  <div class="auth-hero">
+    <div class="hero-inner">
+      <div class="hero-logo">🔬</div>
+      <h1>OnchoLens</h1>
+      <p>AI-powered cancer detection platform for modern healthcare professionals.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span>99.2%</span><small>Model Accuracy</small></div>
+        <div class="hero-stat"><span>50K+</span><small>Scans Analysed</small></div>
+        <div class="hero-stat"><span>1.2K+</span><small>Doctors</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel (form) -->
+  <div class="auth-form-panel">
+    <div class="auth-topbar">
+      <button class="theme-toggle">🌙</button>
+    </div>
+    <div class="auth-card">
+      <div style="margin-bottom:28px">
+        <h2 style="font-family:var(--font-display);font-size:1.7rem;font-weight:800">Welcome back</h2>
+        <p style="color:var(--text-2);margin-top:6px;font-size:.9rem">Sign in to your OnchoLens account</p>
+      </div>
+
+      <div id="error-banner" class="error-banner" style="display:none"></div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group" style="margin-bottom:16px">
+          <label class="form-label">Email address</label>
+          <input class="form-input" type="email" id="email" placeholder="doctor@hospital.com" required autocomplete="email" />
+        </div>
+        <div class="form-group" style="margin-bottom:24px">
+          <label class="form-label" style="display:flex;justify-content:space-between">
+            Password
+            <a href="#" style="font-weight:400;font-size:.82rem">Forgot password?</a>
+          </label>
+          <input class="form-input" type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn"
+                style="width:100%;justify-content:center;padding:13px;font-size:.95rem">
+          Sign In
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:24px;font-size:.88rem;color:var(--text-2)">
+        Don't have an account?
+        <a href="/signup" style="font-weight:600">Create one →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/login.js"></script>
+</body>
+</html>

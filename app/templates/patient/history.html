@@ -1,0 +1,70 @@
+{% from 'macros.html' import patient_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical History — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ patient_sidebar('history') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">📁 Medical History</div>
+        <div class="page-subtitle">Your complete health timeline on OnchoLens</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline" onclick="exportHistory()">⬇️ Export</button>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(14,165,233,.1)">📅</div>
+        <div class="stat-value" id="stat-apts">—</div>
+        <div class="stat-label">Total Appointments</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(34,197,94,.1)">💊</div>
+        <div class="stat-value" id="stat-rx">—</div>
+        <div class="stat-label">Prescriptions</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(239,68,68,.1)">🔬</div>
+        <div class="stat-value" id="stat-scans">—</div>
+        <div class="stat-label">AI Scans</div>
+      </div>
+    </div>
+
+    <!-- Timeline tabs -->
+    <div class="section-card">
+      <div class="filter-chips" style="margin-bottom:20px">
+        <button class="chip active" onclick="setTab(this,'all')">All Events</button>
+        <button class="chip" onclick="setTab(this,'appointment')">📅 Appointments</button>
+        <button class="chip" onclick="setTab(this,'prescription')">💊 Prescriptions</button>
+        <button class="chip" onclick="setTab(this,'scan')">🔬 AI Scans</button>
+      </div>
+
+      <div class="timeline" id="history-timeline">
+        <div class="empty-state">
+          <div class="spinner" style="width:32px;height:32px;margin:0 auto 12px"></div>
+          Building your timeline…
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/patient-history.js"></script>
+</body>
+</html>

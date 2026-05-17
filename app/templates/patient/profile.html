@@ -1,0 +1,136 @@
+{% from 'macros.html' import patient_sidebar %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — OnchoLens</title>
+  <link rel="stylesheet" href="/static/css/themes.css" />
+  <link rel="stylesheet" href="/static/css/pages.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+  {{ patient_sidebar('profile') }}
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="page-title">👤 My Profile</div>
+        <div class="page-subtitle">Keep your health information up to date</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="save-btn" onclick="saveProfile()">💾 Save Changes</button>
+        <button class="theme-toggle">🌙</button>
+      </div>
+    </div>
+
+    <!-- Avatar banner -->
+    <div class="section-card" style="margin-bottom:20px">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="avatar-display">
+          PT
+          <div class="avatar-edit-btn">✎</div>
+        </div>
+        <div class="profile-meta">
+          <h2 id="display-name">Loading…</h2>
+          <p id="display-email"></p>
+          <span class="badge badge-success" style="margin-top:6px">Patient</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal info -->
+    <div class="section-card">
+      <div class="section-card-title">Personal Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="f-name" placeholder="Your full name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" id="f-phone" placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input class="form-input" type="date" id="f-dob" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Blood Group</label>
+          <select class="form-input" id="f-blood">
+            <option value="">— Select —</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select class="form-input" id="f-gender">
+            <option value="">— Select —</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emergency Contact</label>
+          <input class="form-input" type="tel" id="f-emergency" placeholder="+91 —" />
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Address</label>
+          <input class="form-input" type="text" id="f-address" placeholder="Your home address" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical info -->
+    <div class="section-card">
+      <div class="section-card-title">Health Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Height (cm)</label>
+          <input class="form-input" type="number" id="f-height" placeholder="170" min="50" max="250" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Weight (kg)</label>
+          <input class="form-input" type="number" id="f-weight" placeholder="65" min="10" max="500" />
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Known Allergies</label>
+          <input class="form-input" type="text" id="f-allergies" placeholder="e.g. Penicillin, Pollen (comma separated)" />
+        </div>
+        <div class="form-group span-2">
+          <label class="form-label">Existing Conditions</label>
+          <textarea class="form-input" id="f-conditions" rows="3"
+            placeholder="e.g. Diabetes Type 2, Hypertension…" style="resize:vertical"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change password -->
+    <div class="section-card">
+      <div class="section-card-title">Change Password</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input class="form-input" type="password" id="new-pw" placeholder="••••••••" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input class="form-input" type="password" id="confirm-pw" placeholder="••••••••" />
+        </div>
+      </div>
+      <button class="btn btn-outline" style="margin-top:12px" onclick="changePassword()">🔒 Update Password</button>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/static/js/patient-profile.js"></script>
+</body>
+</html>
